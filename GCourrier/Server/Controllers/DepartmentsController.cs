@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GCourrier.Server.Data;
 using GCourrier.Shared;
+using GCourrier.Server.Models;
 
 namespace GCourrier.Server.Controllers
 {
@@ -15,7 +16,9 @@ namespace GCourrier.Server.Controllers
     [ApiController]
     public class DepartmentsController : ControllerBase
     {
-        private readonly GCourrierDbContext _context;
+        //Added By Scaffolding Controller 
+        //Connect directly to Database 
+        /*private readonly GCourrierDbContext _context;
 
         public DepartmentsController(GCourrierDbContext context)
         {
@@ -104,6 +107,47 @@ namespace GCourrier.Server.Controllers
         private bool DepartmentExists(int id)
         {
             return _context.Department.Any(e => e.Id == id);
+        }*/
+        private readonly IDepartmentRepository departmentRepository;
+
+        public DepartmentsController(IDepartmentRepository departmentRepository)
+        {
+            this.departmentRepository = departmentRepository;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetDepartments()
+        {
+            try
+            {
+                return Ok(await departmentRepository.GetDepartments());
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Department>> GetDepartment(int id)
+        {
+            try
+            {
+                var result = await departmentRepository.GetDepartment(id);
+
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error retrieving data from the database");
+            }
         }
     }
 }

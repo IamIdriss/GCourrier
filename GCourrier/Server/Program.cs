@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using GCourrier.Server.Data;
+using GCourrier.Server.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<GCourrierDbContext>(options =>
 
     options.UseSqlServer(builder.Configuration.GetConnectionString("GCourrierDbContext") ?? throw new InvalidOperationException("Connection string 'GCourrierDbContext' not found.")));
+
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IAgentRepository, AgentRepository>();
 
 var app = builder.Build();
 
