@@ -1,4 +1,7 @@
-using Microsoft.AspNetCore.ResponseCompression;
+﻿using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using GCourrier.Server.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<GCourrierDbContext>(options =>
+
+    options.UseSqlServer(builder.Configuration.GetConnectionString("GCourrierDbContext") ?? throw new InvalidOperationException("Connection string 'GCourrierDbContext' not found.")));
 
 var app = builder.Build();
 
