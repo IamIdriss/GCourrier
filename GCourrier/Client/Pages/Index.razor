@@ -2,24 +2,32 @@
 @using GCourrier.Shared
 @using Syncfusion.Blazor.Grids
 
-<SfGrid DataSource="@Agents">
-    <GridColumns>
-        <GridColumn Field=@nameof(Agent.Id) HeaderText="Agent ID"></GridColumn>
-        <GridColumn Field=@nameof(Agent.FirstName) HeaderText="First Name"></GridColumn>
-        <GridColumn Field=@nameof(Agent.LastName) HeaderText=" Last Name"></GridColumn>
-        <GridColumn Field=@nameof(Agent.Email) HeaderText="Email"></GridColumn>
-    </GridColumns>
-</SfGrid>
+@if (Agents == null)
+{
+    <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap5" Size="100" Label="Loading Data ...">
+</SfSpinner>
+}
+else
+{
+    <SfGrid DataSource="@Agents">
+        <GridColumns>
+            <GridColumn Field=@nameof(Agent.Id) HeaderText="ID"></GridColumn>
+            <GridColumn Field=@nameof(Agent.FirstName) HeaderText="First Name"></GridColumn>
+            <GridColumn Field=@nameof(Agent.LastName) HeaderText=" Last Name"></GridColumn>
+            <GridColumn Field=@nameof(Agent.Email) HeaderText="Email"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+}
 
-@code {
-    public List<Agent> Agents { get; set; }
+@code{
+    public List<Agent> Agents { get; set; } = null;
 
     [Inject]
-public IAgentService AgentService { get; set; }
+    public IAgentService AgentService { get; set; }
 
-protected override async Task OnInitializedAsync()
-{
-    Agents = (await AgentService.GetAgents()).ToList();
-}
-   
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(1000);
+        Agents = (await AgentService.GetAgents()).ToList();
+    }
 }
