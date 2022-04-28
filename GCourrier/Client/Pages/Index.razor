@@ -2,25 +2,36 @@
 @using GCourrier.Shared
 @using Syncfusion.Blazor.Grids
 
-@if (Agents == null)
+@if (Agent == null)
 {
     <SfSpinner Visible="true" Type="@SpinnerType.Bootstrap5" Size="100" Label="Loading Data ...">
 </SfSpinner>
 }
 else
 {
-    <SfGrid DataSource="@Agents">
+    <SfGrid DataSource="@Agent" AllowSorting="true" AllowPaging="true">
+        <GridPageSettings PageSize="10" PageCount="5" PageSizes="@pagerDropdown">
+    </GridPageSettings>
+    <GridSortSettings>
+        <GridSortColumns>
+            <GridSortColumn Field="Id" Direction="SortDirection.Descending">
+            </GridSortColumn>
+        </GridSortColumns>
+    </GridSortSettings>
         <GridColumns>
             <GridColumn Field=@nameof(Agent.Id) HeaderText="ID"></GridColumn>
             <GridColumn Field=@nameof(Agent.FirstName) HeaderText="First Name"></GridColumn>
             <GridColumn Field=@nameof(Agent.LastName) HeaderText=" Last Name"></GridColumn>
+             <GridColumn Field=@nameof(Agent.Power) HeaderText="Power"></GridColumn>
             <GridColumn Field=@nameof(Agent.Email) HeaderText="Email"></GridColumn>
+             <GridColumn Field=@nameof(Agent.DepartmentId) HeaderText="Departement"></GridColumn>
         </GridColumns>
     </SfGrid>
 }
 
 @code{
-    public List<Agent> Agents { get; set; } = null;
+    string[] pagerDropdown = new string[] { "All", "5", "10", "15", "20" };
+    public List<Agent> Agent { get; set; } = null;
 
     [Inject]
     public IAgentService AgentService { get; set; }
@@ -28,6 +39,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         await Task.Delay(1000);
-        Agents = (await AgentService.GetAgents()).ToList();
+        Agent = (await AgentService.GetAgent()).ToList();
     }
 }

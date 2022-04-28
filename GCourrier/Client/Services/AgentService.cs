@@ -12,19 +12,20 @@ namespace GCourrier.Client.Services
             this.httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<Agent>> GetAgents()
+        public async Task<IEnumerable<Agent>> GetAllAgents()
         {
-            return await httpClient.GetFromJsonAsync<IEnumerable<Agent>>("api/Agents");
+            return await httpClient.GetFromJsonAsync<IEnumerable<Agent>>("/api/Agents/all");
         }
 
-        public Task<Agent> AddAgent(Agent agent)
+        public async Task<Agent> AddAgent(Agent Agent)
         {
-            throw new NotImplementedException();
+            var response = await httpClient.PostAsJsonAsync<Agent>("/api/Agents", Agent);
+            return await response.Content.ReadFromJsonAsync<Agent>();
         }
 
-        public Task DeleteAgent(int Id)
+        public async Task DeleteAgent(int Id)
         {
-            throw new NotImplementedException();
+            await httpClient.DeleteAsync($"/api/Agents/{Id}");
         }
 
         public Task<Agent> GetAgent(int Id)
@@ -37,15 +38,20 @@ namespace GCourrier.Client.Services
             throw new NotImplementedException();
         }
 
+      
         public Task<IEnumerable<Agent>> Search(string name, Power? power)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Agent> UpdateAgent(Agent agent)
+        public async Task<Agent> UpdateAgent(Agent agent)
         {
-            throw new NotImplementedException();
+            var response = await httpClient
+                .PutAsJsonAsync<Agent>($"/api/Agents/{agent.Id}", agent);
+            return await response.Content.ReadFromJsonAsync<Agent>();
         }
+
+        
     }
 }
 

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCourrier.Server", "GCourrier\Server\GCourrier.Server.csproj", "{D74B9C4F-31CC-4527-B6A0-C0B67C3F0FBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GCourrier.Server", "GCourrier\Server\GCourrier.Server.csproj", "{D74B9C4F-31CC-4527-B6A0-C0B67C3F0FBA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCourrier.Client", "GCourrier\Client\GCourrier.Client.csproj", "{A3B95085-F709-4AD2-AA88-58A4DCC2D0C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GCourrier.Client", "GCourrier\Client\GCourrier.Client.csproj", "{A3B95085-F709-4AD2-AA88-58A4DCC2D0C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCourrier.Shared", "GCourrier\Shared\GCourrier.Shared.csproj", "{B119C33D-41C8-415B-A7C0-616D8BF467CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GCourrier.Shared", "GCourrier\Shared\GCourrier.Shared.csproj", "{B119C33D-41C8-415B-A7C0-616D8BF467CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,62 @@
+﻿
+
+
+@page "/agent"
+@using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Inputs
+
+<h3>Agent</h3>
+<div style="width:700px">
+    <SfToolbar>
+        <ToolbarItems>
+            <ToolbarItem Type="ItemType.Input" Align="ItemAlign.Right">
+                <Template>
+                    <SfTextBox Placeholder="Search Term" @ref="SearchTextBox"></SfTextBox>
+                </Template>
+            </ToolbarItem>
+            <ToolbarItem Type="ItemType.Button" Align="ItemAlign.Right">
+                <Template>
+                    <SfButton Content="Search" OnClick="@SearchClick"></SfButton>
+                </Template>
+            </ToolbarItem>
+        </ToolbarItems>
+    </SfToolbar>
+    <SfGrid @ref="AgentGrid" DataSource="@Agents">
+        <GridColumns>
+            <GridColumn Field=@nameof(Agent.Id) HeaderText="ID"></GridColumn>
+            <GridColumn Field=@nameof(Agent.FirstName) HeaderText="First Name"></GridColumn>
+            <GridColumn Field=@nameof(Agent.LastName) HeaderText=" Last Name"></GridColumn>
+            
+            <GridColumn Field=@nameof(Agent.Power) HeaderText="Power"></GridColumn>
+            <GridColumn Field=@nameof(Agent.Email) HeaderText="Email"></GridColumn>
+			<GridColumn Field=@nameof(Agent.DepartmentId) HeaderText="Department"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+</div>
+@code{
+
+    public SfGrid<Agent> AgentGrid { get; set; }
+
+    public SfTextBox SearchTextBox { get; set; }
+
+    public List<Agent> Agents { get; set; }
+
+    [Inject]
+    public IAgentService AgentService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Agents = (await AgentService.GetAgents()).ToList();
+    }
+
+    private void SearchClick()
+    {
+        this.AgentGrid.SearchAsync(this.SearchTextBox.Value);
+    }
+}
+
+@code {
+
+}

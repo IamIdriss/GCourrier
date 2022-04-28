@@ -1,0 +1,60 @@
+﻿
+
+@page "/gridedit"
+@using Syncfusion.Blazor.Grids
+
+<h3>Edit</h3>
+<div style="width:800px">
+    <SfGrid @ref="agentGrid" DataSource="@Agent" AllowPaging="true"
+            Toolbar="@(new List<string>() { "Add", "Edit", "Update", "Delete", "Cancel" })">
+        <GridEditSettings AllowAdding="true" AllowEditing="true" AllowDeleting="true"></GridEditSettings>
+        <GridPageSettings PageSize="5"></GridPageSettings>
+        <GridEvents OnActionBegin="ActionBeginHandler" TValue="Agent">
+        </GridEvents>
+        <GridColumns>
+            <GridColumn IsPrimaryKey="true" Field=@nameof(Agent.Id) HeaderText="ID" Width="60px">
+            </GridColumn>
+            <GridColumn Field=@nameof(Agent.FirstName) HeaderText="First Name"></GridColumn>
+            <GridColumn Field=@nameof(Agent.LastName) HeaderText=" Last Name"></GridColumn>
+             <GridColumn Field=@nameof(Agent.Power) HeaderText="Power"></GridColumn>
+            <GridColumn Field=@nameof(Agent.Email) HeaderText="Email"></GridColumn>
+             <GridColumn Field=@nameof(Agent.DepartmentId) HeaderText="Departement"></GridColumn>
+        </GridColumns>
+    </SfGrid>
+</div>
+
+@code{
+
+    public List<Agent> Agent { get; set; }
+
+    public SfGrid<Agent> agentGrid { get; set; }
+
+    [Inject]
+    public IAgentService AgentService { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Agent = (await AgentService.GetAllAgents()).ToList();
+    }
+
+    public async void ActionBeginHandler(ActionEventArgs<Agent> Args)
+    {
+        if (Args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Save))
+        {
+            if (Args.Action == "Add")
+            {
+                await AgentService.AddAgent(Args.Data);
+                Agent = (await AgentService.GetAllAgents()).ToList();
+                AgentGrid.Refresh();
+            }
+            else
+            {
+                await AgentService.UpdateAgent(Args.Data);
+            }
+        }
+        if (Args.RequestType.Equals(Syncfusion.Blazor.Grids.Action.Delete))
+        {
+            await AgentService.DeleteAgent(Args.Data.AgentId);
+        }
+    }
+}
